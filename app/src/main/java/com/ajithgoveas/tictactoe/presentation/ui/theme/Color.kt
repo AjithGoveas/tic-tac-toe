@@ -1,4 +1,4 @@
-package com.ajithgoveas.tictactoe.ui.theme
+package com.ajithgoveas.tictactoe.presentation.ui.theme
 import androidx.compose.ui.graphics.Color
 
 val primaryLight = Color(0xFF535A92)

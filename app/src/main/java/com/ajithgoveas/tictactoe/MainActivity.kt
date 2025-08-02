@@ -9,8 +9,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.ajithgoveas.tictactoe.ui.GameScreen
-import com.ajithgoveas.tictactoe.ui.theme.TicTacToeTheme
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.ajithgoveas.tictactoe.presentation.GameScreen
+import com.ajithgoveas.tictactoe.presentation.GameViewModel
+import com.ajithgoveas.tictactoe.presentation.ui.theme.TicTacToeTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,9 +20,11 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             TicTacToeTheme {
+                val viewModel = viewModel<GameViewModel>()
                 HomeScreen(
                     modifier = Modifier
-                        .background(color = MaterialTheme.colorScheme.background)
+                        .background(color = MaterialTheme.colorScheme.background),
+                    gameViewModel = viewModel
                 )
             }
         }
@@ -28,8 +32,11 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
-    GameScreen(modifier = modifier)
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    gameViewModel: GameViewModel
+) {
+    GameScreen(modifier = modifier, viewModel = gameViewModel)
 }
 
 @Preview(showBackground = false)
@@ -38,7 +45,8 @@ private fun GameScreenPreview() {
     TicTacToeTheme {
         HomeScreen(
             modifier = Modifier
-                .background(color = MaterialTheme.colorScheme.background)
+                .background(color = MaterialTheme.colorScheme.background),
+            viewModel<GameViewModel>()
         )
     }
 }

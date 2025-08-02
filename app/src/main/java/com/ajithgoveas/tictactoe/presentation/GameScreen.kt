@@ -1,4 +1,4 @@
-package com.ajithgoveas.tictactoe.ui
+package com.ajithgoveas.tictactoe.presentation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -59,8 +59,11 @@ fun ScoreDisplay(
 
 @Composable
 fun GameScreen(
+    viewModel: GameViewModel,
     modifier: Modifier = Modifier
 ) {
+    val state = viewModel.state
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -88,12 +91,12 @@ fun GameScreen(
                 modifier = Modifier.padding(bottom = 16.dp),
             )
             Text(
-                "Player 'O' turn",
+                text = viewModel.state.hintText,
                 style = MaterialTheme.typography.titleLarge
             )
         }
 
-        TicTacToeBoard()
+        TicTacToeBoard(viewModel = viewModel)
 
         Row(
             modifier = Modifier.fillMaxWidth(),

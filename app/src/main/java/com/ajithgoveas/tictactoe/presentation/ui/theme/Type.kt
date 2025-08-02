@@ -1,4 +1,4 @@
-package com.ajithgoveas.tictactoe.ui.theme
+package com.ajithgoveas.tictactoe.presentation.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.font.FontFamily

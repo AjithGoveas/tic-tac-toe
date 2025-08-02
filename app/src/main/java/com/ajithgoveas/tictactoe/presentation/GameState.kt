@@ -1,4 +1,4 @@
-package com.ajithgoveas.tictactoe.domain
+package com.ajithgoveas.tictactoe.presentation
 
 data class GameState(
     val playerCircleCount: Int = 0,
