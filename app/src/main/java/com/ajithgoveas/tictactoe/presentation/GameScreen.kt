@@ -24,7 +24,8 @@ fun ScoreText(text: String, modifier: Modifier = Modifier) {
     Text(
         text = text,
         style = MaterialTheme.typography.titleLarge, // Relies on titleMedium being appropriately styled
-        modifier = modifier
+        modifier = modifier,
+        color = MaterialTheme.colorScheme.onBackground
     )
 }
 
@@ -72,9 +73,9 @@ fun GameScreen(
         verticalArrangement = Arrangement.SpaceEvenly,
     ) {
         ScoreDisplay(
-            oScore = 0,
-            xScore = 0,
-            drawScore = 0
+            oScore = state.playerCircleCount,
+            xScore = state.playerCrossCount,
+            drawScore = state.drawCount
         )
 
         Column(
@@ -91,8 +92,9 @@ fun GameScreen(
                 modifier = Modifier.padding(bottom = 16.dp),
             )
             Text(
-                text = viewModel.state.hintText,
-                style = MaterialTheme.typography.titleLarge
+                text = state.hintText,
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onBackground
             )
         }
 
@@ -103,7 +105,9 @@ fun GameScreen(
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             Button(
-                onClick = {},
+                onClick = {
+                    viewModel.onAction(UserAction.PlayAgainButtonClicked)
+                },
                 colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
             ) {
                 Text(text = "Play Again")

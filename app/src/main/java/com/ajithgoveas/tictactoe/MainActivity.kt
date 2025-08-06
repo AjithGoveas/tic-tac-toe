@@ -41,7 +41,7 @@ fun HomeScreen(
 
 @Preview(showBackground = false)
 @Composable
-private fun GameScreenPreview() {
+private fun HomeScreenPreview() {
     TicTacToeTheme {
         HomeScreen(
             modifier = Modifier

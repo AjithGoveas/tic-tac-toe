@@ -26,8 +26,40 @@ class GameViewModel : ViewModel() {
                 addValueToBoard(action.cellNo)
             }
 
-            UserAction.PlayAgainButtonClicked -> TODO()
+            UserAction.PlayAgainButtonClicked -> {
+                gameReset()
+            }
+
+            UserAction.SurrenderButtonClicked -> {
+                surrender()
+            }
         }
+    }
+
+    private fun surrender() {
+        boardItems.forEach { (i, _) ->
+            boardItems[i] = BoardCellValue.NONE
+        }
+        state = state.copy(
+            hintText = "Player 'X' turn",
+            currentTurn = BoardCellValue.CROSS,
+            victoryType = VictoryType.NONE,
+            hasWon = true,
+//            isBoardFull = false
+        )
+    }
+
+    private fun gameReset() {
+        boardItems.forEach { (i, _) ->
+            boardItems[i] = BoardCellValue.NONE
+        }
+        state = state.copy(
+            hintText = "Player 'O' turn",
+            currentTurn = BoardCellValue.CIRCLE,
+            victoryType = VictoryType.NONE,
+            hasWon = false,
+//            isBoardFull = false
+        )
     }
 
     private fun addValueToBoard(cellNo: Int) {
@@ -35,16 +67,98 @@ class GameViewModel : ViewModel() {
 
         if (state.currentTurn == BoardCellValue.CIRCLE) {
             boardItems[cellNo] = BoardCellValue.CIRCLE
-            state = state.copy(
-                hintText = "Player 'X' turn",
-                currentTurn = BoardCellValue.CROSS
-            )
+
+            if (checkVictory(BoardCellValue.CIRCLE)) {
+                state = state.copy(
+                    hintText = "Player 'O' Won",
+                    playerCircleCount = state.playerCircleCount + 1,
+                    currentTurn = BoardCellValue.NONE,
+                    hasWon = true
+                )
+            } else if (hasBoardFull()) {
+                state = state.copy(
+                    hintText = "Game Draw",
+                    drawCount = state.drawCount + 1
+                )
+            } else {
+                state = state.copy(
+                    hintText = "Player 'X' turn",
+                    currentTurn = BoardCellValue.CROSS
+                )
+            }
         } else if (state.currentTurn == BoardCellValue.CROSS) {
             boardItems[cellNo] = BoardCellValue.CROSS
-            state = state.copy(
-                hintText = "Player 'O' turn",
-                currentTurn = BoardCellValue.CIRCLE
-            )
+
+            if (checkVictory(BoardCellValue.CROSS)) {
+                state = state.copy(
+                    hintText = "Player 'X' Won",
+                    playerCrossCount = state.playerCrossCount + 1,
+                    currentTurn = BoardCellValue.NONE,
+                    hasWon = true
+                )
+
+            } else if (hasBoardFull()) {
+                state = state.copy(
+                    hintText = "Game Draw",
+                    drawCount = state.drawCount + 1
+                )
+            } else {
+                state = state.copy(
+                    hintText = "Player 'O' turn",
+                    currentTurn = BoardCellValue.CIRCLE
+                )
+            }
         }
+    }
+
+    private fun checkVictory(boardValue: BoardCellValue): Boolean {
+        when {
+            boardItems[1] == boardValue && boardItems[2] == boardValue && boardItems[3] == boardValue -> {
+                state = state.copy(victoryType = VictoryType.HORIZONTAL1)
+                return true
+            }
+
+            boardItems[4] == boardValue && boardItems[5] == boardValue && boardItems[6] == boardValue -> {
+                state = state.copy(victoryType = VictoryType.HORIZONTAL2)
+                return true
+            }
+
+            boardItems[7] == boardValue && boardItems[8] == boardValue && boardItems[9] == boardValue -> {
+                state = state.copy(victoryType = VictoryType.HORIZONTAL3)
+                return true
+            }
+
+            boardItems[1] == boardValue && boardItems[4] == boardValue && boardItems[7] == boardValue -> {
+                state = state.copy(victoryType = VictoryType.VERTICAL1)
+                return true
+            }
+
+            boardItems[2] == boardValue && boardItems[5] == boardValue && boardItems[8] == boardValue -> {
+                state = state.copy(victoryType = VictoryType.VERTICAL2)
+                return true
+            }
+
+            boardItems[3] == boardValue && boardItems[6] == boardValue && boardItems[9] == boardValue -> {
+                state = state.copy(victoryType = VictoryType.VERTICAL3)
+                return true
+            }
+
+            boardItems[1] == boardValue && boardItems[5] == boardValue && boardItems[9] == boardValue -> {
+                state = state.copy(victoryType = VictoryType.DIAGONAL1)
+                return true
+            }
+
+            boardItems[3] == boardValue && boardItems[5] == boardValue && boardItems[7] == boardValue -> {
+                state = state.copy(victoryType = VictoryType.DIAGONAL2)
+                return true
+            }
+
+            else -> return false
+        }
+    }
+
+    private fun hasBoardFull(): Boolean {
+        //  Checks for None cell-value and returns respective boolean
+        return !boardItems.containsValue(BoardCellValue.NONE)
     }
 }
