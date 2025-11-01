@@ -87,7 +87,6 @@ fun GameScreen(
                 text = "Tic Tac Toe",
                 color = MaterialTheme.colorScheme.primary,
                 style = MaterialTheme.typography.headlineLarge,
-                fontSize = 58.sp,
                 letterSpacing = 4.sp, // Changed from dp to sp
                 modifier = Modifier.padding(bottom = 16.dp),
             )

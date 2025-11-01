@@ -55,7 +55,7 @@ fun TicTacToeBoard(modifier: Modifier = Modifier, viewModel: GameViewModel) {
                 .aspectRatio(1f),
             columns = GridCells.Fixed(3),
         ) {
-            items(viewModel.boardItems.keys.toList()) { cellNo ->
+            items(viewModel.boardItems.keys.toList(), key = {it}) { cellNo ->
                 val boardCellValue = viewModel.boardItems[cellNo]
                 Column(
                     modifier = Modifier
@@ -77,10 +77,10 @@ fun TicTacToeBoard(modifier: Modifier = Modifier, viewModel: GameViewModel) {
                             animationSpec = tween(durationMillis = 1000)
                         ),
                     ) {
-                        if (boardCellValue == BoardCellValue.CIRCLE) {
-                            CircleOh()
-                        } else if (boardCellValue == BoardCellValue.CROSS) {
-                            Cross()
+                        when(boardCellValue) {
+                            BoardCellValue.CROSS -> Cross()
+                            BoardCellValue.CIRCLE -> CircleOh()
+                            else -> null
                         }
                     }
                 }
